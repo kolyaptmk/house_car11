@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Моя панорама</title>
+    <title>Тур по дому</title>
     <link rel="stylesheet" href="build/pannellum.css"/>
     <script type="text/javascript" src="build/pannellum.js"></script>
     <style>
@@ -16,19 +16,87 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: rgba(0,0,0,0.7);
+            padding: 15px 25px;
+            border-radius: 50px;
+            color: white;
+            display: flex;
+            gap: 20px;
+        }
+        .controls button {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .controls button:hover {
+            background: #45a049;
         }
     </style>
 </head>
 <body>
     <div id="panorama"></div>
+    
+    <div class="controls">
+        <button onclick="loadPanorama('panorama1.jpg')">Точка 1 (вход)</button>
+        <button onclick="loadPanorama('panorama2.jpg')">Точка 2 (гостиная)</button>
+    </div>
+
     <script>
-        pannellum.viewer('panorama', {
+        // Создаём viewer
+        var viewer = pannellum.viewer('panorama', {
             "type": "equirectangular",
-            "panorama": "panorana.png",
+            "panorama": "panorama1.jpg", // первая панорама по умолчанию
             "autoLoad": true,
             "compass": true,
-            "preview": false
+            "hotSpots": [
+                {
+                    "pitch": 0,
+                    "yaw": 90,
+                    "type": "scene",
+                    "text": "В гостиную",
+                    "sceneId": "scene2"
+                }
+            ]
         });
+
+        // Функция для загрузки другой панорамы
+        function loadPanorama(filename) {
+            viewer.loadScene({
+                "type": "equirectangular",
+                "panorama": filename,
+                "autoLoad": true,
+                "hotSpots": filename === "panorama1.jpg" ? [
+                    {
+                        "pitch": 0,
+                        "yaw": 90,
+                        "type": "scene",
+                        "text": "В гостиную",
+                        "sceneId": "scene2"
+                    }
+                ] : [
+                    {
+                        "pitch": 0,
+                        "yaw": -90,
+                        "type": "scene",
+                        "text": "Ко входу",
+                        "sceneId": "scene1"
+                    }
+                ]
+            });
+        }
     </script>
 </body>
 </html>
