@@ -50,51 +50,30 @@
     <div id="panorama"></div>
     
     <div class="controls">
-        <button onclick="loadPanorama('panorama1.png')">Точка 1 </button>
-        <button onclick="loadPanorama('panorama2.png')">Точка 2 </button>
+        <button onclick="loadPanorama('panorama1.png')">Точка 1</button>
+        <button onclick="loadPanorama('panorama2.png')">Точка 2</button>
     </div>
 
     <script>
         // Создаём viewer
         var viewer = pannellum.viewer('panorama', {
             "type": "equirectangular",
-            "panorama": "panorama1.png", // первая панорама по умолчанию
+            "panorama": "panorama1.png",
             "autoLoad": true,
-            "compass": true,
-            "hotSpots": [
-                {
-                    "pitch": 0,
-                    "yaw": 90,
-                    "type": "scene",
-                    "text": "В гостиную",
-                    "sceneId": "scene2"
-                }
-            ]
+            "compass": true
         });
 
         // Функция для загрузки другой панорамы
         function loadPanorama(filename) {
-            viewer.loadScene({
+            // Останавливаем текущий просмотр
+            viewer.destroy();
+            
+            // Создаём новый с нужной панорамой
+            viewer = pannellum.viewer('panorama', {
                 "type": "equirectangular",
-                "panorama": panorama2.png,
+                "panorama": filename,
                 "autoLoad": true,
-                "hotSpots": filename === "panorama1.png" ? [
-                    {
-                        "pitch": 0,
-                        "yaw": 90,
-                        "type": "scene",
-                        "text": "В гостиную",
-                        "sceneId": "scene2"
-                    }
-                ] : [
-                    {
-                        "pitch": 0,
-                        "yaw": -90,
-                        "type": "scene",
-                        "text": "Ко входу",
-                        "sceneId": "scene1"
-                    }
-                ]
+                "compass": true
             });
         }
     </script>
